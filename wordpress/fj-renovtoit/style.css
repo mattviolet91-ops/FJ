@@ -1,0 +1,14 @@
+/*
+Theme Name: F.J Renovtoit
+Description: Thème vitrine sombre (noir et or) pour F.J Renovtoit, couvreur à Savigny-sur-Orge. Coordonnées modifiables dans Apparence > Personnaliser > Coordonnées F.J Renovtoit.
+Version: 2.0.0
+Requires at least: 6.0
+Requires PHP: 7.4
+License: GPLv2 or later
+Text Domain: fj-renovtoit
+*/
+
+/* Les styles principaux sont dans assets/css/style.css */
+.page-content { padding: 80px 0; min-height: 50vh; }
+.page-content h1 { font-family: var(--titre); text-transform: uppercase; color: var(--or); margin-bottom: 24px; }
+.page-content p { margin-bottom: 14px; }

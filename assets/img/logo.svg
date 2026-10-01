@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 64" role="img" aria-label="F.J Renovtoit">
+  <defs>
+    <linearGradient id="or" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffd54a"/><stop offset="1" stop-color="#e09a00"/>
+    </linearGradient>
+  </defs>
+  <path d="M6 34 L32 10 L58 34" fill="none" stroke="url(#or)" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="42" y="12" width="7" height="12" fill="url(#or)"/>
+  <rect x="24" y="30" width="16" height="16" rx="1" fill="none" stroke="#fff" stroke-width="3"/>
+  <path d="M32 30 V46 M24 38 H40" stroke="#fff" stroke-width="2.5"/>
+  <text x="70" y="27" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-style="italic" font-size="22" fill="url(#or)">F.J</text>
+  <text x="70" y="54" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-style="italic" font-size="26" fill="#fff">Renov<tspan fill="url(#or)">toit</tspan></text>
+</svg>

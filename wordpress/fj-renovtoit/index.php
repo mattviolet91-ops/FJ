@@ -7,7 +7,7 @@
         <?php the_content(); ?>
       </article>
     <?php endwhile; else : ?>
-      <p><?php esc_html_e( 'Aucun contenu trouvé.', 'fj-couverture' ); ?></p>
+      <p><?php esc_html_e( 'Aucun contenu trouvé.', 'fj-renovtoit' ); ?></p>
     <?php endif; ?>
   </div>
 </main>

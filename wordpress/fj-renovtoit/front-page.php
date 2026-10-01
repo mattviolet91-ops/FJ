@@ -1,77 +1,4 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>F.J Renovtoit – Couvreur à Savigny-sur-Orge (91) | Couverture, zinguerie, ravalement</title>
-  <meta name="description" content="F.J Renovtoit, couvreur à Savigny-sur-Orge : couverture, zinguerie, rénovation de toiture, ravalement de façade, réparation de fuites, démoussage. Devis gratuit au 06 67 04 74 57.">
-  <meta name="theme-color" content="#0b0d10">
-  <link rel="icon" href="assets/img/logo.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600&family=Barlow+Condensed:wght@600;700;800&family=Kaushan+Script&display=swap">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "RoofingContractor",
-    "name": "F.J Renovtoit",
-    "telephone": "+33667047457",
-    "email": "fj.couverture@gmail.com",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "4 rue de Charaintru",
-      "postalCode": "91600",
-      "addressLocality": "Savigny-sur-Orge",
-      "addressCountry": "FR"
-    },
-    "areaServed": "Savigny-sur-Orge et Essonne (91)"
-  }
-  </script>
-</head>
-<body>
-  <!-- Icônes -->
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-    <defs>
-      <symbol id="i-maison" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 3l9 8M5 10v10h14V10M10 20v-6h4v6"/></symbol>
-      <symbol id="i-gouttiere" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18v4a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3zM16 13v8M13 21h6"/></symbol>
-      <symbol id="i-renovation" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 4l9 8M5 11v9h6M14 14l6 6M17 12l3-3 2 2-3 3z"/></symbol>
-      <symbol id="i-facade" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V9l8-5 8 5v12zM8 12h3v3H8zM13 12h3v3h-3zM10 21v-3h4v3"/></symbol>
-      <symbol id="i-goutte" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/></symbol>
-      <symbol id="i-brosse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4l6 6-7 7H7v-6zM4 20l3-3M9 9l6 6"/></symbol>
-      <symbol id="i-spray" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 10h7v11H8zM9.5 10V6h4v4M17 4h2M17 7h4M17 10h2"/></symbol>
-      <symbol id="i-couches" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8l10-5 10 5-10 5zM2 13l10 5 10-5M2 18l10 5 10-5"/></symbol>
-      <symbol id="i-fenetre" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4zM12 4v16M4 12h16"/></symbol>
-      <symbol id="i-cheminee" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V12l9-7 9 7v9M15 7V3h3v6.5"/></symbol>
-      <symbol id="i-charpente" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20 12 4l10 16zM12 4v16M7 12l5 8 5-8"/></symbol>
-      <symbol id="i-terrasse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18v9H3zM3 15h18M5 7c2-2 4 2 6 0s4-2 6 0 3 1 4 0"/></symbol>
-      <symbol id="i-arbre" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l6 8h-4l4 6H6l4-6H6zM12 17v4"/></symbol>
-      <symbol id="i-eclair" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></symbol>
-      <symbol id="i-bouclier" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6zM8.5 12l2.5 2.5 4.5-5"/></symbol>
-      <symbol id="i-equipe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/><circle cx="17" cy="9" r="2.5"/><path d="M16 15c3 0 5 1.5 5 4"/></symbol>
-      <symbol id="i-medaille" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M9 14.5 7 22l5-3 5 3-2-7.5M9.5 9l2 2 3-3.5"/></symbol>
-      <symbol id="i-horloge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
-      <symbol id="i-tel" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></symbol>
-      <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18v14H3zM3 7l9 6 9-6"/></symbol>
-      <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6 7-12a7 7 0 0 0-14 0c0 6 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></symbol>
-    </defs>
-  </svg>
-
-  <header class="site-header">
-    <div class="container">
-      <a href="#accueil" class="logo"><img src="assets/img/logo.svg" alt="F.J Renovtoit" width="208" height="52"></a>
-      <button class="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false">☰</button>
-      <nav class="main-nav">
-        <ul>
-          <li><a href="#prestations">Prestations</a></li>
-          <li><a href="#entreprise">L'entreprise</a></li>
-          <li><a href="#zone">Zone d'intervention</a></li>
-          <li><a href="#contact">Contact</a></li>
-          <li><a href="tel:+33667047457" class="btn"><svg><use href="#i-tel"/></svg>06 67 04 74 57</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+<?php get_header(); ?>
 
   <main>
     <section class="hero" id="accueil">
@@ -82,7 +9,7 @@
         <p class="intro">Une entreprise de confiance pour tous vos travaux de <strong class="or">toiture</strong> et de <strong class="or">rénovation</strong> à Savigny-sur-Orge et dans toute l'Essonne.</p>
         <div class="actions">
           <a href="#contact" class="btn">Devis gratuit</a>
-          <a href="tel:+33667047457" class="btn btn-outline"><svg><use href="#i-tel"/></svg>06 67 04 74 57</a>
+          <a href="<?php echo esc_attr( fj_tel_href() ); ?>" class="btn btn-outline"><svg><use href="#i-tel"/></svg><?php echo esc_html( fj_option( 'fj_telephone' ) ); ?></a>
         </div>
       </div>
     </section>
@@ -108,7 +35,7 @@
 
         <div class="prestations-principales">
           <article class="presta-photo">
-            <div class="photo"><img src="assets/img/toiture.jpg" alt="Toiture en tuiles avec fenêtre de toit" loading="lazy"><span class="etiquette">Toiture</span></div>
+            <div class="photo"><img src="<?php echo esc_url( get_template_directory_uri() ); ?>/assets/img/toiture.jpg" alt="Toiture en tuiles avec fenêtre de toit" loading="lazy"><span class="etiquette">Toiture</span></div>
             <div class="corps">
               <h3>Couverture <small>à Savigny-sur-Orge</small></h3>
               <p>Pose, rénovation et réparation de tous types de toitures.</p>
@@ -116,7 +43,7 @@
             </div>
           </article>
           <article class="presta-photo">
-            <div class="photo"><img src="assets/img/zinguerie.jpg" alt="Gouttière et descente en zinc" loading="lazy"><span class="etiquette">Zinguerie</span></div>
+            <div class="photo"><img src="<?php echo esc_url( get_template_directory_uri() ); ?>/assets/img/zinguerie.jpg" alt="Gouttière et descente en zinc" loading="lazy"><span class="etiquette">Zinguerie</span></div>
             <div class="corps">
               <h3>Zinguerie <small>à Savigny-sur-Orge</small></h3>
               <p>Gouttières, chéneaux, habillages, étanchéité et finitions.</p>
@@ -124,7 +51,7 @@
             </div>
           </article>
           <article class="presta-photo">
-            <div class="photo"><img src="assets/img/renovation.jpg" alt="Rénovation de toiture en cours avec liteaux" loading="lazy"><span class="etiquette">Rénovation</span></div>
+            <div class="photo"><img src="<?php echo esc_url( get_template_directory_uri() ); ?>/assets/img/renovation.jpg" alt="Rénovation de toiture en cours avec liteaux" loading="lazy"><span class="etiquette">Rénovation</span></div>
             <div class="corps">
               <h3>Rénovation de toiture <small>à Savigny-sur-Orge</small></h3>
               <p>Rénovation de toiture et aménagements extérieurs.</p>
@@ -132,7 +59,7 @@
             </div>
           </article>
           <article class="presta-photo">
-            <div class="photo"><img src="assets/img/ravalement.jpg" alt="Maison avec façade rénovée" loading="lazy"><span class="etiquette">Ravalement</span></div>
+            <div class="photo"><img src="<?php echo esc_url( get_template_directory_uri() ); ?>/assets/img/ravalement.jpg" alt="Maison avec façade rénovée" loading="lazy"><span class="etiquette">Ravalement</span></div>
             <div class="corps">
               <h3>Ravalement de façade <small>à Savigny-sur-Orge</small></h3>
               <p>Nettoyage, traitement et remise en état de vos façades.</p>
@@ -218,7 +145,7 @@
           <a href="#contact" class="btn">Demander mon devis</a>
         </div>
         <div class="apropos-visuel">
-          <img src="assets/img/hero-toit.jpg" alt="Toiture rénovée avec cheminée en briques" loading="lazy">
+          <img src="<?php echo esc_url( get_template_directory_uri() ); ?>/assets/img/hero-toit.jpg" alt="Toiture rénovée avec cheminée en briques" loading="lazy">
           <div class="pastille"><strong>Devis gratuit</strong>et sans engagement</div>
         </div>
       </div>
@@ -251,8 +178,8 @@
     <div class="bandeau-appel">
       <div class="container">
         <div>
-          <a href="tel:+33667047457" class="tel"><span class="rond"><svg><use href="#i-tel"/></svg></span>06 67 04 74 57</a>
-          <p class="adresse">4 rue de Charaintru, 91600 Savigny-sur-Orge</p>
+          <a href="<?php echo esc_attr( fj_tel_href() ); ?>" class="tel"><span class="rond"><svg><use href="#i-tel"/></svg></span><?php echo esc_html( fj_option( 'fj_telephone' ) ); ?></a>
+          <p class="adresse"><?php echo esc_html( fj_option( 'fj_adresse' ) ); ?></p>
         </div>
         <span class="script">Contactez-nous dès maintenant !</span>
       </div>
@@ -267,12 +194,20 @@
             <p>Décrivez-nous votre projet, nous vous recontactons rapidement.</p>
           </div>
           <ul class="contact-infos">
-            <li><span class="icone"><svg><use href="#i-tel"/></svg></span><div><strong>Téléphone</strong><a href="tel:+33667047457">06 67 04 74 57</a></div></li>
-            <li><span class="icone"><svg><use href="#i-mail"/></svg></span><div><strong>E-mail</strong><a href="mailto:fj.couverture@gmail.com">fj.couverture@gmail.com</a></div></li>
-            <li><span class="icone"><svg><use href="#i-pin"/></svg></span><div><strong>Adresse</strong><a href="https://www.google.com/maps/search/?api=1&amp;query=4+rue+de+Charaintru+91600+Savigny-sur-Orge" target="_blank" rel="noopener">4 rue de Charaintru<br>91600 Savigny-sur-Orge</a></div></li>
+            <li><span class="icone"><svg><use href="#i-tel"/></svg></span><div><strong>Téléphone</strong><a href="<?php echo esc_attr( fj_tel_href() ); ?>"><?php echo esc_html( fj_option( 'fj_telephone' ) ); ?></a></div></li>
+            <li><span class="icone"><svg><use href="#i-mail"/></svg></span><div><strong>E-mail</strong><a href="mailto:<?php echo esc_attr( fj_option( 'fj_email' ) ); ?>"><?php echo esc_html( fj_option( 'fj_email' ) ); ?></a></div></li>
+            <li><span class="icone"><svg><use href="#i-pin"/></svg></span><div><strong>Adresse</strong><a href="<?php echo esc_url( fj_maps_url() ); ?>" target="_blank" rel="noopener"><?php echo esc_html( fj_option( 'fj_adresse' ) ); ?></a></div></li>
           </ul>
         </div>
-        <form id="form-devis" data-mode="mailto" data-email="fj.couverture@gmail.com">
+        <form id="form-devis" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+          <?php if ( isset( $_GET['devis'] ) && 'ok' === $_GET['devis'] ) : ?>
+            <p class="form-message">Merci, votre demande a bien été envoyée. Nous vous recontactons rapidement.</p>
+          <?php elseif ( isset( $_GET['devis'] ) ) : ?>
+            <p class="form-message form-erreur">Une erreur est survenue. Merci de nous appeler directement.</p>
+          <?php endif; ?>
+          <input type="hidden" name="action" value="fj_devis">
+          <?php wp_nonce_field( 'fj_devis', 'fj_devis_nonce' ); ?>
+          <div class="screen-reader-text" aria-hidden="true"><label for="site_web">Ne pas remplir</label><input id="site_web" name="site_web" tabindex="-1" autocomplete="off"></div>
           <h3>Demande de devis</h3>
           <div class="form-row">
             <div><label for="nom">Nom *</label><input id="nom" name="nom" autocomplete="name" required></div>
@@ -304,37 +239,4 @@
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container">
-      <div class="footer-grille">
-        <div>
-          <a href="#accueil" class="logo"><img src="assets/img/logo.svg" alt="F.J Renovtoit" width="224" height="56"></a>
-          <p>Couverture, zinguerie, rénovation et ravalement à Savigny-sur-Orge et en Essonne.</p>
-        </div>
-        <div>
-          <h4>Prestations</h4>
-          <ul>
-            <li><a href="#prestations">Couverture à Savigny-sur-Orge</a></li>
-            <li><a href="#prestations">Zinguerie à Savigny-sur-Orge</a></li>
-            <li><a href="#prestations">Rénovation de toiture à Savigny-sur-Orge</a></li>
-            <li><a href="#prestations">Ravalement à Savigny-sur-Orge</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4>Contact</h4>
-          <ul>
-            <li><a href="tel:+33667047457">06 67 04 74 57</a></li>
-            <li><a href="mailto:fj.couverture@gmail.com">fj.couverture@gmail.com</a></li>
-            <li>4 rue de Charaintru, 91600 Savigny-sur-Orge</li>
-          </ul>
-        </div>
-      </div>
-      <p class="footer-bas">© <span id="annee"></span> F.J Renovtoit – Couvreur à Savigny-sur-Orge – Tous droits réservés</p>
-    </div>
-  </footer>
-
-  <a href="tel:+33667047457" class="appel-flottant" aria-label="Appeler F.J Renovtoit"><svg><use href="#i-tel"/></svg></a>
-
-  <script src="assets/js/main.js"></script>
-</body>
-</html>
+<?php get_footer(); ?>
