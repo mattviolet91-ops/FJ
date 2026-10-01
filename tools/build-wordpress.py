@@ -20,9 +20,9 @@ THEME = RACINE / "wordpress" / "fj-renovtoit"
 TEL = "06 67 04 74 57"
 TEL_HREF = "tel:+33667047457"
 EMAIL = "fj.couverture@gmail.com"
-ADRESSE = "4 rue de Charaintru, 91600 Savigny-sur-Orge"
-ADRESSE_BR = "4 rue de Charaintru<br>91600 Savigny-sur-Orge"
-MAPS = "https://www.google.com/maps/search/?api=1&amp;query=4+rue+de+Charaintru+91600+Savigny-sur-Orge"
+ADRESSE = "4 rue de Charaïntru, 91360 Épinay-sur-Orge"
+ADRESSE_BR = "4 rue de Charaïntru<br>91360 Épinay-sur-Orge"
+MAPS = "https://www.google.com/maps/search/?api=1&amp;query=4+rue+de+Chara%C3%AFntru+91360+%C3%89pinay-sur-Orge"
 
 URI = "<?php echo esc_url( get_template_directory_uri() ); ?>/assets/"
 ACCUEIL = "<?php echo esc_url( home_url( '/' ) ); ?>"
@@ -89,7 +89,7 @@ def main():
     footer_php = coordonnees(pied).lstrip("\n") + "\n<?php wp_footer(); ?>\n</body>\n</html>\n"
 
     for nom, contenu in (("header.php", header_php), ("front-page.php", front_php), ("footer.php", footer_php)):
-        if any(v in contenu for v in (TEL, EMAIL, "91600")):
+        if any(v in contenu for v in (TEL, EMAIL, "91360")):
             raise SystemExit(f"Coordonnée restée en dur dans {nom}")
         (THEME / nom).write_text(contenu, encoding="utf-8")
 

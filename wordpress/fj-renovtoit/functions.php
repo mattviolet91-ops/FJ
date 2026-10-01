@@ -32,7 +32,7 @@ function fj_defaults() {
 	return array(
 		'fj_telephone' => '06 67 04 74 57',
 		'fj_email'     => 'fj.couverture@gmail.com',
-		'fj_adresse'   => '4 rue de Charaintru, 91600 Savigny-sur-Orge',
+		'fj_adresse'   => '4 rue de Charaïntru, 91360 Épinay-sur-Orge',
 	);
 }
 
