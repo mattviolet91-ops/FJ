@@ -267,7 +267,7 @@ form .btn { justify-content: center; }
   }
   .main-nav.open { display: block; }
   .main-nav ul { flex-direction: column; padding: 22px; gap: 18px; }
-  .prestations-principales { grid-template-columns: 1fr; }
+  .prestations-principales { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .appel-flottant { display: grid; }
   section { padding: 70px 0; }
   .hero { padding: 80px 0 100px; background-position: 70% center; }
@@ -299,4 +299,15 @@ form .btn { justify-content: center; }
   .presta h3 { font-size: 1rem; -webkit-hyphens: auto; hyphens: auto; overflow-wrap: break-word; }
   .presta h3 small { font-size: 0.8em; }
   .presta p { font-size: 0.85rem; line-height: 1.45; margin-top: 6px; }
+}
+
+/* Mobile : grandes cartes avec photo deux par deux */
+@media (max-width: 820px) {
+  .presta-photo .photo { aspect-ratio: 4 / 3; }
+  .presta-photo .etiquette { font-size: 0.85rem; padding: 4px 16px 4px 10px; bottom: 10px; border-bottom-width: 3px; }
+  .presta-photo .corps { padding: 14px; }
+  .presta-photo h3 { font-size: 1rem; -webkit-hyphens: auto; hyphens: auto; overflow-wrap: break-word; }
+  .presta-photo h3 small { font-size: 0.8em; }
+  .presta-photo p { font-size: 0.85rem; line-height: 1.45; margin-top: 6px; }
+  .presta-photo ul { font-size: 0.8rem; line-height: 1.45; margin-top: 8px; }
 }
