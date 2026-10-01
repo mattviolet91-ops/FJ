@@ -16,7 +16,7 @@ Le site sera alors visible à l'adresse `https://mattviolet91-ops.github.io/FJ/`
 Couleurs : noir et bronze (variables en haut de `assets/css/style.css`).
 
 ## À personnaliser avant mise en ligne
-- Téléphone `00 00 00 00 00` et e-mail `contact@exemple.fr` (dans `index.html`)
+- Téléphone `00 00 00 00 00` (dans `index.html`)
 - Photos des réalisations (actuellement des visuels provisoires)
 - Mentions légales (obligatoires : SIRET, assurance décennale, etc.)
 

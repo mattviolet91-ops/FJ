@@ -29,7 +29,7 @@ add_action( 'wp_enqueue_scripts', 'fj_assets' );
 function fj_defaults() {
 	return array(
 		'fj_telephone' => '00 00 00 00 00',
-		'fj_email'     => get_option( 'admin_email' ),
+		'fj_email'     => 'fj.couverture@gmail.com',
 		'fj_adresse'   => '4 rue de Charaintru, 91600 Savigny-sur-Orge',
 		'fj_zone'      => 'Savigny-sur-Orge et alentours (Essonne)',
 		'fj_horaires'  => 'Du lundi au vendredi, 8h – 18h',
