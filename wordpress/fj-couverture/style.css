@@ -1,0 +1,15 @@
+/*
+Theme Name: FJ Couverture
+Description: Thème vitrine pour FJ Couverture (couvreur). Coordonnées modifiables dans Apparence > Personnaliser > Coordonnées FJ Couverture.
+Version: 1.0.0
+Requires at least: 6.0
+Requires PHP: 7.4
+License: GPLv2 or later
+Text Domain: fj-couverture
+*/
+
+/* Les styles principaux sont dans assets/css/main.css */
+.page-content { padding: 70px 0; }
+.page-content h1 { color: var(--bleu); margin-bottom: 24px; }
+.page-content p { margin-bottom: 14px; }
+.screen-reader-text { position: absolute; left: -9999px; }
