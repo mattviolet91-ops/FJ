@@ -17,7 +17,6 @@ Couleurs : noir et bronze (variables en haut de `assets/css/style.css`).
 
 ## À personnaliser avant mise en ligne
 - Téléphone `00 00 00 00 00` et e-mail `contact@exemple.fr` (dans `index.html`)
-- Zone d'intervention `[Votre ville et alentours]`
 - Photos des réalisations (actuellement des visuels provisoires)
 - Mentions légales (obligatoires : SIRET, assurance décennale, etc.)
 

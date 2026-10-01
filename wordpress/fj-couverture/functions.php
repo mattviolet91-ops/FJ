@@ -30,7 +30,8 @@ function fj_defaults() {
 	return array(
 		'fj_telephone' => '00 00 00 00 00',
 		'fj_email'     => get_option( 'admin_email' ),
-		'fj_zone'      => '[Votre ville et alentours]',
+		'fj_adresse'   => '4 rue de Charaintru, 91600 Savigny-sur-Orge',
+		'fj_zone'      => 'Savigny-sur-Orge et alentours (Essonne)',
 		'fj_horaires'  => 'Du lundi au vendredi, 8h – 18h',
 	);
 }
@@ -49,6 +50,7 @@ function fj_customize_register( $wp_customize ) {
 	$champs = array(
 		'fj_telephone' => array( __( 'Téléphone', 'fj-couverture' ), 'sanitize_text_field' ),
 		'fj_email'     => array( __( 'E-mail (reçoit les demandes de devis)', 'fj-couverture' ), 'sanitize_email' ),
+		'fj_adresse'   => array( __( 'Adresse', 'fj-couverture' ), 'sanitize_text_field' ),
 		'fj_zone'      => array( __( "Zone d'intervention", 'fj-couverture' ), 'sanitize_text_field' ),
 		'fj_horaires'  => array( __( 'Horaires', 'fj-couverture' ), 'sanitize_text_field' ),
 	);

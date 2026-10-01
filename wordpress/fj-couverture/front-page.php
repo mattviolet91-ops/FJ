@@ -117,6 +117,7 @@
           <ul class="contact-infos">
             <li><strong>Téléphone</strong><a href="<?php echo esc_attr( fj_tel_href() ); ?>"><?php echo esc_html( fj_option( 'fj_telephone' ) ); ?></a></li>
             <li><strong>E-mail</strong><a href="mailto:<?php echo esc_attr( fj_option( 'fj_email' ) ); ?>"><?php echo esc_html( fj_option( 'fj_email' ) ); ?></a></li>
+            <li><strong>Adresse</strong><a href="<?php echo esc_url( 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( fj_option( 'fj_adresse' ) ) ); ?>" target="_blank" rel="noopener"><?php echo esc_html( fj_option( 'fj_adresse' ) ); ?></a></li>
             <li><strong>Zone d'intervention</strong><?php echo esc_html( fj_option( 'fj_zone' ) ); ?></li>
             <li><strong>Horaires</strong><?php echo esc_html( fj_option( 'fj_horaires' ) ); ?></li>
           </ul>
