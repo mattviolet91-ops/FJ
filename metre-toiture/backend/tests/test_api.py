@@ -237,6 +237,11 @@ def test_reconstruction_simulee(client, tmp_path, monkeypatch):
     gj = client.get(f"/api/chantiers/{cid}/export/geojson").json()
     lon, lat = gj["features"][0]["geometry"]["coordinates"][0][0]
     assert 2.0 < lon < 4.0 and 48.0 < lat < 49.5   # UTM 31N, E=450 km, N=5400 km
+    # réajustement d'un plan sur un contour dessiné à la main (pan sud : y de -4 à 0)
+    r = client.post(f"/api/chantiers/{cid}/ajuster-plan", json={"contour": [[-4, -3.5], [4, -3.5], [4, -0.5], [-4, -0.5]]},
+                    headers=H).json()
+    assert math.degrees(math.atan(math.hypot(r["plan"]["a"], r["plan"]["b"]))) == pytest.approx(35, abs=0.5)
+    assert r["stats"]["rms"] < 0.03
     # nouvelle détection ciblée (traitement asynchrone)
     d = client.post(f"/api/chantiers/{cid}/detection", json={"graine": [0, 0]}, headers=H).json()
     with SessionLocal() as db:

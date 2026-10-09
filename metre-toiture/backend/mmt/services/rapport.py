@@ -250,8 +250,10 @@ def generer(ch: dict, entreprise: dict, document: dict, calcul: dict, validation
     el.append(_legende())
 
     # --- pans
-    lignes = [["Pan", "Orient.", "Pente", "Surf. plan", "Surface", "Déduct.", "Nette", "Rampant", "Source",
-               "Confiance", "Validé"]]
+    entetes = ["Pan", "Orient.", "Pente", "Projetée", "Réelle", "Déduc-tions", "Nette", "Rampant", "Source",
+               "Confiance", "Validé"]
+    st_ent = ParagraphStyle("ent", parent=S["cell"], textColor=colors.white, fontName=_GRAS, fontSize=7, leading=8.5)
+    lignes = [[Paragraph(e.replace("-", ""), st_ent) for e in entetes]]
     src = {"modele_3d": "Modèle 3D", "saisie": "Saisie", "estimation": "Estimation"}
     for p in calcul["pans"]:
         lignes.append([Paragraph(p["nom"] or p["id"], S["cell"]), p["orientation"],
@@ -263,8 +265,8 @@ def generer(ch: dict, entreprise: dict, document: dict, calcul: dict, validation
                    _n(tot["surface_nette"]), "", "", "", ""])
     el.append(PageBreak())
     el.append(Paragraph("Détail des pans (surfaces en m², longueurs en m)", S["h2"]))
-    el.append(_table(lignes, [30 * mm, 12 * mm, 20 * mm, 15 * mm, 15 * mm, 13 * mm, 15 * mm, 14 * mm, 17 * mm,
-                              16 * mm, 11 * mm]))
+    el.append(_table(lignes, [29 * mm, 12 * mm, 20 * mm, 15 * mm, 15 * mm, 14 * mm, 15 * mm, 15 * mm, 17 * mm,
+                              16 * mm, 12 * mm]))
 
     # --- lignes
     el.append(Paragraph("Longueurs par type de ligne", S["h2"]))

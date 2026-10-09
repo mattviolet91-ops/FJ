@@ -18,6 +18,11 @@ from . import geometry as geo
 
 NIVEAUX = ["faible", "moyenne", "elevee"]
 
+
+def nfr(v: float, d: int = 1) -> str:
+    """Nombre au format français (virgule décimale)."""
+    return f"{v:.{d}f}".replace(".", ",")
+
 LIBELLES_SOURCE = {
     "modele_3d": "Modèle 3D",
     "estimation": "Estimation",
@@ -85,7 +90,7 @@ def incertitude_echelle(echelle: dict) -> tuple[float | None, str]:
             moy = sum(facteurs) / len(facteurs)
             disp = max(abs(f - moy) / moy for f in facteurs)
             u = max(u / math.sqrt(len(refs)), disp)
-            return u, f"Échelle contrôlée par {len(refs)} cotes de référence (dispersion {disp * 100:.1f} %)."
+            return u, f"Échelle contrôlée par {len(refs)} cotes de référence (dispersion {nfr(disp * 100)} %)."
         return u, "Échelle contrôlée par une cote de référence."
     if src == "gcp":
         return 0.005, "Échelle issue de points de contrôle au sol."
@@ -118,10 +123,10 @@ def _confiance_pan(p: dict, pg: geo.Pan | None, echelle: dict, u_ech: float | No
         if rms is not None:
             if rms > 0.06:
                 niveau = min(niveau, 0)
-                raisons.append(f"Surface du pan irrégulière ou bruitée (écart au plan {rms * 100:.1f} cm).")
+                raisons.append(f"Surface du pan irrégulière ou bruitée (écart au plan {nfr(rms * 100)} cm).")
             elif rms > 0.03:
                 niveau = min(niveau, 1)
-                raisons.append(f"Écart moyen au plan de {rms * 100:.1f} cm.")
+                raisons.append(f"Écart moyen au plan de {nfr(rms * 100)} cm.")
         couv = st.get("couverture")
         if couv is not None:
             if couv < 0.7:
@@ -218,7 +223,7 @@ def calculer(doc: dict) -> dict[str, Any]:
         conf = _confiance_pan(p, pg, echelle, u_ech, k)
         if pente < 5 and pente > 0.5:
             controles.append({"niveau": "info", "code": "pente_faible", "pan_id": p["id"],
-                              "message": f"{p.get('nom')} : pente de {pente:.1f}° — vérifiez la pente minimale "
+                              "message": f"{p.get('nom')} : pente de {nfr(pente)}° — vérifiez la pente minimale "
                                          "admissible du matériau (DTU / avis technique)."})
         if pente > 65:
             controles.append({"niveau": "alerte", "code": "pente_forte", "pan_id": p["id"],
@@ -319,7 +324,7 @@ def calculer(doc: dict) -> dict[str, Any]:
             if ov * k * k > 0.10:
                 controles.append({"niveau": "alerte", "code": "recouvrement", "pan_id": geos[i].id,
                                   "message": f"Les pans « {geos[i].nom or geos[i].id} » et « {geos[j].nom or geos[j].id} » "
-                                             f"se chevauchent en plan ({ov * k * k:.2f} m²) : risque de double comptage."})
+                                             f"se chevauchent en plan ({nfr(ov * k * k, 2)} m²) : risque de double comptage."})
     if any(not p["valide"] for p in pans_out):
         n = sum(1 for p in pans_out if not p["valide"])
         controles.append({"niveau": "info", "code": "pans_non_valides",

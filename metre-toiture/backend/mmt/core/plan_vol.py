@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import math
 
+from .metre import nfr
 from .photos import DIAG_35MM
 
 # Caractéristiques indicatives (photo standard 4:3). obturateur : « meca » ou « roulant »
@@ -146,9 +147,9 @@ def generer_plan(params: dict) -> dict:
     if nb_nadir:
         etapes.append({"titre": "Passages verticaux (nacelle à −90°)", "points": [
             f"Hauteur de vol : environ {h_sol:.0f} m au-dessus du point de décollage "
-            f"(≈ {h_toit:.0f} m au-dessus du faîtage) pour ≈ {gsd_toit:.1f} cm/pixel sur le toit.",
-            f"{nb_lignes} lignes parallèles au faîtage, espacées d'environ {pas_ligne:.1f} m.",
-            f"Une photo tous les {pas_photo:.1f} m environ ({photos_ligne} par ligne), soit ≈ {nb_nadir} photos.",
+            f"(≈ {h_toit:.0f} m au-dessus du faîtage) pour ≈ {nfr(gsd_toit)} cm/pixel sur le toit.",
+            f"{nb_lignes} lignes parallèles au faîtage, espacées d'environ {nfr(pas_ligne)} m.",
+            f"Une photo tous les {nfr(pas_photo)} m environ ({photos_ligne} par ligne), soit ≈ {nb_nadir} photos.",
             "Débordez d'environ 5 m autour du bâtiment de chaque côté.",
             "Une application de vol automatique (quadrillage) est idéale ; en manuel, utilisez le déclenchement "
             "par intervalle et une vitesse constante et lente.",

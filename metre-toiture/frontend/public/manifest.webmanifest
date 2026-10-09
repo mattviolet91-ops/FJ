@@ -1,0 +1,13 @@
+{
+  "name": "Matt's Métré Toiture",
+  "short_name": "Métré Toiture",
+  "lang": "fr",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#23272A",
+  "theme_color": "#2BABE2",
+  "icons": [
+    { "src": "/icone-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icone-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

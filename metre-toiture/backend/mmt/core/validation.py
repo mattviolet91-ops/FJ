@@ -1,6 +1,8 @@
 """Checklist de validation avant devis (guide E)."""
 from __future__ import annotations
 
+from .metre import nfr
+
 OK, ATTENTION, BLOQUANT = "ok", "attention", "bloquant"
 
 CONFIRMATIONS = {
@@ -30,7 +32,7 @@ def checklist(metre: dict, contexte: dict, confirmations: dict) -> dict:
     elif ech.get("incertitude_rel") is not None:
         u = ech["incertitude_rel"]
         st = OK if u <= 0.02 else ATTENTION
-        det = ech["message"] + f" Incertitude d'échelle estimée : ±{u * 100:.1f} %."
+        det = ech["message"] + f" Incertitude d'échelle estimée : ±{nfr(u * 100)} %."
     else:
         st, det = BLOQUANT if mode == "photo" else ATTENTION, ech["message"]
     items.append({"code": "echelle", "titre": "Échelle métrique fiable", "statut": st, "detail": det})

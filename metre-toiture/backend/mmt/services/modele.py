@@ -245,3 +245,43 @@ def depuis_wgs84(info: dict, lon: float, lat: float) -> tuple[float, float]:
     dst = CRS.from_epsg(info["epsg"]) if info.get("epsg") else CRS.from_wkt(info["crs_wkt"])
     xs, ys = transform("EPSG:4326", dst, [lon], [lat])
     return xs[0] - e0, ys[0] - n0
+
+
+def ajuster_plan_contour(dossier: Path, contour: list[tuple[float, float]], marge_m: float = 0.15) -> dict:
+    """Ajuste un plan sur les cellules du MNS situées à l'intérieur d'un contour (légèrement
+    rétréci pour éviter les bords), avec rejet itératif des points aberrants (émergences)."""
+    from scipy import ndimage
+
+    from ..core import geometry as geo
+
+    xs = [p[0] for p in contour]
+    ys = [p[1] for p in contour]
+    g = lire_mns(dossier, (min(xs) - 1, min(ys) - 1, max(xs) + 1, max(ys) + 1))
+    H, W = g.z.shape
+    jj, ii = np.meshgrid(np.arange(W), np.arange(H))
+    X, Y = g.xy(ii, jj)
+    m = geo._masque_polygone(X, Y, contour)
+    total = int(m.sum())
+    if total == 0:
+        raise ValueError("Le contour est en dehors du modèle 3D.")
+    it = max(1, int(round(marge_m / g.res)))
+    interieur = ndimage.binary_erosion(m, iterations=it)
+    if interieur.sum() >= 30:
+        m = interieur
+    sel = m & np.isfinite(g.z)
+    if sel.sum() < 10:
+        raise ValueError("Pas assez de points du modèle 3D dans ce contour.")
+    pts = np.column_stack([X[sel], Y[sel], g.z[sel]])
+    garde = np.ones(len(pts), bool)
+    plan, rms = geo.ajuster_plan(pts)
+    for _ in range(4):
+        r = np.abs(pts[:, 2] - (plan.a * pts[:, 0] + plan.b * pts[:, 1] + plan.c)) / plan.facteur_pente
+        seuil = max(0.04, 2.5 * float(np.median(r)) * 1.4826)
+        garde = r < seuil
+        if garde.sum() < 10:
+            break
+        plan, rms = geo.ajuster_plan(pts[garde])
+    return {"plan": plan.to_dict(),
+            "stats": {"rms": rms, "n_points": int(garde.sum()), "resolution": g.res,
+                      "couverture": float(np.isfinite(g.z[m]).mean() * (g.valide[m].mean() if g.valide is not None else 1)),
+                      "part_rejetee": float(1 - garde.mean())}}

@@ -218,6 +218,24 @@ def rapport_odm(cid: int, _: Utilisateur = Depends(utilisateur_courant), db: Ses
     return FileResponse(f, media_type="application/pdf", filename="rapport_reconstruction.pdf")
 
 
+class Contour(BaseModel):
+    contour: list[list[float]]
+
+
+@router.post("/chantiers/{cid}/ajuster-plan")
+def ajuster_plan(cid: int, d: Contour, _: Utilisateur = Depends(utilisateur_courant), db: Session = Depends(get_db)):
+    """Plan ajusté sur le modèle 3D à l'intérieur d'un contour dessiné ou corrigé à la main."""
+    c = chantier_ou_404(db, cid)
+    if not c.modele or c.modele.get("type") != "odm":
+        raise HTTPException(400, "Aucun modèle 3D pour ce chantier : saisissez la pente.")
+    if len(d.contour) < 3 or len(d.contour) > 500:
+        raise HTTPException(400, "Contour invalide")
+    try:
+        return mod.ajuster_plan_contour(dossier_modele(cid), [(float(p[0]), float(p[1])) for p in d.contour])
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+
+
 class PhotoUnique(BaseModel):
     photo_id: int
     hauteur_toit: float            # hauteur du toit (m) au-dessus du point de décollage

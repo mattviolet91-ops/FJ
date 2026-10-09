@@ -1,0 +1,27 @@
+# Installation complète sur un serveur : application + moteur de reconstruction 3D.
+# Démarrage :  docker compose up -d   puis ouvrir http://<serveur>:8000
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      MMT_NODEODM_URL: http://nodeodm:3000
+      MMT_COOKIE_SECURE: "${MMT_COOKIE_SECURE:-false}"   # mettre true derrière HTTPS
+    volumes:
+      - mmt-donnees:/data
+    depends_on:
+      - nodeodm
+
+  nodeodm:
+    image: opendronemap/nodeodm:latest
+    restart: unless-stopped
+    # NodeODM n'est pas exposé à l'extérieur : seul le service « app » y accède.
+    command: ["--max_images", "500", "--cleanup_tasks_after", "2880"]
+    volumes:
+      - nodeodm-donnees:/var/www/data
+
+volumes:
+  mmt-donnees:
+  nodeodm-donnees:
