@@ -58,10 +58,11 @@ class ErreurNodeODM(Exception):
 
 
 class ClientNodeODM:
-    def __init__(self, url: str, jeton: str = "", timeout: float = 60.0):
+    def __init__(self, url: str, jeton: str = "", timeout: float = 60.0, transport=None):
         self.url = url.rstrip("/")
         self.jeton = jeton
         self.timeout = timeout
+        self.transport = transport  # pour les tests
 
     def _p(self, extra: dict | None = None) -> dict:
         p = dict(extra or {})
@@ -71,7 +72,7 @@ class ClientNodeODM:
 
     def _req(self, methode: str, chemin: str, **kw):
         try:
-            with httpx.Client(timeout=kw.pop("timeout", self.timeout)) as c:
+            with httpx.Client(timeout=kw.pop("timeout", self.timeout), transport=self.transport) as c:
                 r = c.request(methode, self.url + chemin, params=self._p(kw.pop("params", None)), **kw)
         except httpx.HTTPError as e:
             raise ErreurNodeODM(f"Serveur de calcul injoignable ({self.url}) : {e}") from e
@@ -90,10 +91,12 @@ class ClientNodeODM:
 
     def creer(self, nom: str, options: dict, sorties: list[str] | None = None) -> str:
         opts = [{"name": k, "value": v} for k, v in options.items()]
-        data = {"name": nom, "options": json.dumps(opts)}
+        # NodeODM n'analyse cette route qu'en multipart/form-data : un formulaire classique serait
+        # accepté mais ses champs (nom, options) ignorés silencieusement.
+        champs = {"name": (None, nom), "options": (None, json.dumps(opts))}
         if sorties:
-            data["outputs"] = json.dumps(sorties)
-        d = self._req("POST", "/task/new/init", data=data)
+            champs["outputs"] = (None, json.dumps(sorties))
+        d = self._req("POST", "/task/new/init", files=champs)
         return d["uuid"]
 
     def envoyer(self, uuid: str, fichiers: list[Path]) -> None:

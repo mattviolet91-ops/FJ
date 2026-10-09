@@ -335,6 +335,19 @@ def avancer_reconstruction(db: Session, job: Traitement):
             db.commit()
         if not reste:
             cli.valider(etat["uuid"])
+            # contrôle défensif : le serveur a-t-il bien pris en compte la demande de MNS ?
+            opts = {o.get("name"): o.get("value") for o in (cli.etat(etat["uuid"]).get("options") or [])}
+            if not opts.get("dsm"):
+                try:
+                    cli.annuler(etat["uuid"])
+                    cli.supprimer(etat["uuid"])
+                except ErreurNodeODM:
+                    pass
+                job.statut, job.fin = "erreur", maintenant()
+                job.erreur = ("Le serveur de calcul n'a pas pris en compte les options de traitement (modèle de surface "
+                              "non demandé). Vérifiez la version de NodeODM ou du service de calcul.")
+                db.commit()
+                return
             job.statut, job.etape = "en_cours", "Reconstruction 3D"
             job.message = "Photos envoyées, calcul en file d'attente"
             etat["debut_calcul"] = time.time()

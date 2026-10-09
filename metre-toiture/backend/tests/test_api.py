@@ -180,7 +180,8 @@ class FauxNodeODM:
     def __init__(self, archive):
         self.archive = archive
         self.envoyees = 0
-        self.etats = [{"status": {"code": 20}, "progress": 40}, {"status": {"code": 40}, "progress": 100,
+        self.etats = [{"status": {"code": 10}, "options": [{"name": "dsm", "value": True}]},
+                      {"status": {"code": 20}, "progress": 40}, {"status": {"code": 40}, "progress": 100,
                                                                    "processingTime": 120000}]
 
     def info(self):
@@ -205,6 +206,9 @@ class FauxNodeODM:
         return dest
 
     def supprimer(self, uuid):
+        pass
+
+    def annuler(self, uuid):
         pass
 
 
