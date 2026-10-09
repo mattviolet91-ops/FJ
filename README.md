@@ -19,3 +19,8 @@ https://mattviolet91-ops.github.io/FJ/
 ## À compléter
 - Mentions légales (obligatoires : SIRET, assurance décennale, hébergeur…)
 - Photos de vrais chantiers (les visuels actuels viennent de la carte de visite)
+
+## Application de métré de toiture
+Le dossier `metre-toiture/` contient **Matt's Métré Toiture**, application web de métré de toiture par drone
+(serveur Python + interface web). Elle ne s'exécute pas sur GitHub Pages : voir
+[metre-toiture/README.md](metre-toiture/README.md) et [l'installation](metre-toiture/docs/INSTALLATION.md).

@@ -409,7 +409,11 @@ def segmenter(g: Grille, graine_xy: tuple[float, float] | None = None,
                     labels[comp] = -1
     for k in range(len(plans)):
         m = labels == k
-        if m.sum() * cell_a < p.surface_min_pan:
+        aire_k = m.sum() * cell_a
+        if aire_k < p.surface_min_pan:
+            labels[m] = -1
+        elif aire_k < 6.0 and _compacite(m) < 0.4:
+            # petite région très irrégulière : typiquement de la végétation ou du bruit
             labels[m] = -1
         elif m.any():
             ids.append(k)
@@ -419,7 +423,14 @@ def segmenter(g: Grille, graine_xy: tuple[float, float] | None = None,
     polys: dict[int, list[tuple[float, float]]] = {}
     masques: dict[int, np.ndarray] = {}
     bruts: dict[int, np.ndarray] = {}
-    tol_dp = max(1.5 * g.res, 0.08)
+    # tolérance de simplification adaptée au bruit réel du modèle (écart au plan médian des pans)
+    rms_pans = []
+    for k in ids:
+        m = labels == k
+        r = (zm[m] - plans[k].z(X[m], Y[m])) / plans[k].facteur_pente
+        rms_pans.append(float(np.sqrt(np.mean(r ** 2))))
+    bruit = float(np.median(rms_pans)) if rms_pans else 0.0
+    tol_dp = max(1.5 * g.res, 0.08, 2.5 * bruit)
     for k in ids:
         m = labels == k
         # combler les trous qui ne contiennent aucun autre pan

@@ -9,13 +9,13 @@ RUN npm run build
 FROM python:3.12-slim
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 \
     MMT_DATA_DIR=/data MMT_FRONTEND_DIR=/app/frontend/dist
-RUN apt-get update && apt-get install -y --no-install-recommends fonts-dejavu-core && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends fonts-dejavu-core libexpat1 && rm -rf /var/lib/apt/lists/*
 WORKDIR /app/backend
 COPY backend/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 COPY backend/mmt ./mmt
 COPY --from=interface /app/dist /app/frontend/dist
-RUN useradd -r -u 1000 mmt && mkdir -p /data && chown mmt /data
+RUN useradd -r -m -u 1000 mmt && mkdir -p /data && chown mmt /data
 USER mmt
 VOLUME /data
 EXPOSE 8000

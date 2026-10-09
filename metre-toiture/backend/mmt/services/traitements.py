@@ -28,7 +28,7 @@ from .nodeodm import CANCELED, COMPLETED, FAILED, LIBELLES, PRESETS, SORTIES, Cl
 
 log = logging.getLogger("mmt.traitements")
 ACTIFS = ("en_attente", "envoi", "en_cours", "telechargement")
-SECONDES_PAR_IMAGE_DEFAUT = 25.0  # calibré automatiquement par l'historique (voir estimer_duree)
+SECONDES_PAR_IMAGE_DEFAUT = 32.0  # mesuré : 87 photos 12 MP, 4 cœurs ; recalé ensuite par l'historique
 LOT_ENVOI = 10
 
 
@@ -154,10 +154,8 @@ def executer_detection(db: Session, chantier: Chantier, graine=None, zone=None, 
                 res.avertissements.append(
                     f"Pan {i + 1} : environ {round((1 - cv) * 100)} % de sa surface sans point observé "
                     "(zone peu ou pas photographiée, ou masquée). Contrôlez ce versant.")
-    nb_gps = db.query(Photo).filter(Photo.chantier_id == chantier.id, Photo.type == "photo").count()
     a_gcp = db.query(Photo).filter(Photo.chantier_id == chantier.id, Photo.type == "gcp").count() > 0
     source = "gcp" if a_gcp else ("gps" if (chantier.analyse_photos or {}).get("stats", {}).get("avec_gps") else "aucune")
-    del nb_gps
     courante = version_courante(db, chantier.id)
     doc = document_depuis_detection(res, info, source, courante.document if courante else None)
     enregistrer_version(db, chantier.id, doc,
