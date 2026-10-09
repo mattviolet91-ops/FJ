@@ -281,7 +281,43 @@ def ajuster_plan_contour(dossier: Path, contour: list[tuple[float, float]], marg
         if garde.sum() < 10:
             break
         plan, rms = geo.ajuster_plan(pts[garde])
+    cv = couverture_nuage(dossier, contour, z_plan=plan.z)
+    if cv is None:
+        cv = float(np.isfinite(g.z[m]).mean() * (g.valide[m].mean() if g.valide is not None else 1))
     return {"plan": plan.to_dict(),
-            "stats": {"rms": rms, "n_points": int(garde.sum()), "resolution": g.res,
-                      "couverture": float(np.isfinite(g.z[m]).mean() * (g.valide[m].mean() if g.valide is not None else 1)),
+            "stats": {"rms": rms, "n_points": int(garde.sum()), "resolution": g.res, "couverture": cv,
                       "part_rejetee": float(1 - garde.mean())}}
+
+
+def couverture_nuage(dossier: Path, contour: list[tuple[float, float]], cellule: float = 0.25,
+                     z_plan=None, tolerance_z: float = 0.5) -> float | None:
+    """Part du pan réellement observée : proportion des cellules (≈ 25 cm) du contour contenant au moins un
+    point du nuage photogrammétrique (proche du plan du pan si z_plan est fourni). Le MNS étant interpolé,
+    c'est le nuage qui révèle les zones non photographiées. None si le nuage est indisponible."""
+    from ..core import geometry as geo
+
+    f = dossier / "nuage_xyz.npy"
+    if not f.exists():
+        return None
+    xyz = np.load(f, mmap_mode="r")
+    xs = [p[0] for p in contour]
+    ys = [p[1] for p in contour]
+    x0, y0, x1, y1 = min(xs), min(ys), max(xs), max(ys)
+    sel = (xyz[:, 0] >= x0) & (xyz[:, 0] <= x1) & (xyz[:, 1] >= y0) & (xyz[:, 1] <= y1)
+    pts = np.asarray(xyz[sel], dtype=float)
+    if z_plan is not None and len(pts):
+        pts = pts[np.abs(pts[:, 2] - z_plan(pts[:, 0], pts[:, 1])) < tolerance_z]
+    nx = max(1, int(np.ceil((x1 - x0) / cellule)))
+    ny = max(1, int(np.ceil((y1 - y0) / cellule)))
+    jj, ii = np.meshgrid(np.arange(nx), np.arange(ny))
+    cx = x0 + (jj + 0.5) * cellule
+    cy = y0 + (ii + 0.5) * cellule
+    dedans = geo._masque_polygone(cx, cy, contour)
+    if not dedans.any():
+        return None
+    occ = np.zeros((ny, nx), bool)
+    if len(pts):
+        j = np.clip(((pts[:, 0] - x0) / cellule).astype(int), 0, nx - 1)
+        i = np.clip(((pts[:, 1] - y0) / cellule).astype(int), 0, ny - 1)
+        occ[i, j] = True
+    return float(occ[dedans].mean())

@@ -55,7 +55,9 @@ def initialiser(d: NouvelUtilisateur, resp: Response, db: Session = Depends(get_
 
 
 @router.post("/connexion")
-def connexion(d: Identifiants, resp: Response, request: Request, db: Session = Depends(get_db)):
+def connexion(d: Identifiants, resp: Response, request: Request, mode: str = "", db: Session = Depends(get_db)):
+    """Connexion. Avec ?mode=api, le jeton est renvoyé dans la réponse (intégrations, ex. logiciel de devis)
+    au lieu d'être placé dans un cookie : à transmettre dans l'en-tête « Authorization: Bearer <jeton> »."""
     import time
     cle = (request.client.host if request.client else "?") + "|" + d.email.lower()
     t = time.time()
@@ -68,7 +70,10 @@ def connexion(d: Identifiants, resp: Response, request: Request, db: Session = D
         _echecs[cle] = recents
         raise HTTPException(401, "Identifiants incorrects")
     _echecs.pop(cle, None)
-    _cookie(resp, ouvrir_session(db, u))
+    jeton = ouvrir_session(db, u)
+    if mode == "api":
+        return {**_u(u), "jeton": jeton}
+    _cookie(resp, jeton)
     return _u(u)
 
 

@@ -137,6 +137,17 @@ def executer_detection(db: Session, chantier: Chantier, graine=None, zone=None, 
         if hasattr(p, k) and v is not None:
             setattr(p, k, type(getattr(p, k))(v))
     res = segmenter(grille, graine_xy=tuple(graine), zone=zone, p=p)
+    # couverture réelle par le nuage de points (le MNS d'ODM est interpolé et masque les lacunes)
+    for i, pan in enumerate(res.pans):
+        pl = geo.Plan.from_dict(pan["plan"])
+        cv = mod.couverture_nuage(dossier, [tuple(c) for c in pan["contour"]], z_plan=lambda x, y, pl=pl: pl.z(x, y))
+        if cv is not None:
+            pan["stats"]["couverture"] = cv
+            pan["stats"]["couverture_source"] = "nuage"
+            if cv < 0.85:
+                res.avertissements.append(
+                    f"Pan {i + 1} : environ {round((1 - cv) * 100)} % de sa surface sans point observé "
+                    "(zone peu ou pas photographiée, ou masquée). Contrôlez ce versant.")
     nb_gps = db.query(Photo).filter(Photo.chantier_id == chantier.id, Photo.type == "photo").count()
     a_gcp = db.query(Photo).filter(Photo.chantier_id == chantier.id, Photo.type == "gcp").count() > 0
     source = "gcp" if a_gcp else ("gps" if (chantier.analyse_photos or {}).get("stats", {}).get("avec_gps") else "aucune")

@@ -128,7 +128,7 @@ function RapportAnalyse({ a, exclure }: { a: AnalysePhotos; exclure: (c: string[
       <div className="grille g4">
         <div className="indicateur"><span>Photos analysées</span><b>{s.nombre}</b></div>
         <div className="indicateur"><span>Avec GPS</span><b>{s.avec_gps ?? 0}</b></div>
-        <div className="indicateur"><span>Verticales / obliques</span><b>{s.angles ? `${s.angles.verticale} / ${s.angles.oblique}` : "—"}</b></div>
+        <div className="indicateur"><span>Verticales / obliques</span><b>{s.angles && s.angles.inconnue < s.nombre ? `${s.angles.verticale} / ${s.angles.oblique}` : "non évaluable"}</b></div>
         <div className="indicateur"><span>Pixel au sol (verticales)</span><b>{s.gsd_sol_cm ? `≈ ${fr(s.gsd_sol_cm.median, 1)} cm` : "non évaluable"}</b></div>
       </div>
       {s.couverture_secteurs && (

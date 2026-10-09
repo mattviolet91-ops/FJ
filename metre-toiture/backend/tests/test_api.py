@@ -54,6 +54,11 @@ def test_securite(client):
     assert r.status_code == 403
     assert client.post("/api/auth/initialiser", json={"email": "a@b.c", "mot_de_passe": "xxxxxxxxxxxx"}).status_code == 409
     assert anon.post("/api/auth/connexion", json={"email": "matt@example.fr", "mot_de_passe": "faux"}).status_code == 401
+    # jeton d'API pour les intégrations (sans cookie, sans en-tête anti-CSRF)
+    j = anon.post("/api/auth/connexion?mode=api", json={"email": "matt@example.fr", "mot_de_passe": "motdepasse-solide"}).json()
+    api = TestClient(app)
+    assert api.get("/api/chantiers", headers={"Authorization": f"Bearer {j['jeton']}"}).status_code == 200
+    assert api.post("/api/chantiers", json={"nom": "via API"}, headers={"Authorization": f"Bearer {j['jeton']}"}).status_code == 200
 
 
 def test_parcours_chantier(client):

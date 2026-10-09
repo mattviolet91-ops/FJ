@@ -56,7 +56,7 @@ function Reconstruction({ chantier, maj }: { chantier: Chantier; maj: () => void
         <div className="carte pile">
           <h2>Reconstruction 3D</h2>
           {!etat ? <Chargement /> : etat.disponible
-            ? <div className="alerte ok"><b>Serveur de calcul disponible</b>{etat.coeurs} cœurs, {etat.memoire_go} Go de mémoire, {etat.file_attente} tâche(s) en file.</div>
+            ? <div className="alerte ok"><b>Serveur de calcul disponible</b>{etat.coeurs} cœurs, {fr(etat.memoire_go || 0, 1)} Go de mémoire, {etat.file_attente} tâche(s) en file.</div>
             : <div className="alerte attention"><b>Serveur de calcul injoignable</b>Le traitement sera mis en attente et démarrera automatiquement dès que le serveur répondra. <Link to="/parametres/calcul">Configuration</Link></div>}
           <p>{n} photo(s) retenue(s).</p>
           {presets && Object.entries(presets).map(([k, p]) => (

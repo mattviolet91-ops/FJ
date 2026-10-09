@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { api, dateFr, envoyerFichiers } from "../api";
+import { api, dateFr, envoyerFichiers, fr } from "../api";
 import { useUtilisateur } from "../App";
 import { Chargement, Icone, useToast } from "../components/ui";
 import type { Article, Ouvrage } from "../types";
@@ -133,7 +133,7 @@ function Calcul() {
           <div className="pile">
             <div className="alerte ok"><b>Disponible</b>{String(etat.url)}</div>
             <div className="indicateur"><span>Moteur</span><b>{String(etat.moteur)} {String(etat.version_moteur)}</b></div>
-            <div className="indicateur"><span>Cœurs / mémoire</span><b>{String(etat.coeurs)} / {String(etat.memoire_go)} Go</b></div>
+            <div className="indicateur"><span>Cœurs / mémoire</span><b>{String(etat.coeurs)} / {fr(Number(etat.memoire_go), 1)} Go</b></div>
             <div className="indicateur"><span>Tâches en file</span><b>{String(etat.file_attente)}</b></div>
           </div>
         ) : <div className="alerte erreur"><b>Injoignable</b>{String(etat.erreur)}</div>}
