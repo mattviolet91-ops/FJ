@@ -1,5 +1,6 @@
 import { ReactNode, useState } from "react";
 import { Link } from "react-router-dom";
+import { FicheMini4K } from "./drones";
 import { ExemplesPrises, SchemaAngles, SchemaCorrection, SchemaHauteur, SchemaOrbite, SchemaRecouvrement,
   SchemaReference, SchemaZoneCachee } from "./Schemas";
 
@@ -125,6 +126,10 @@ export const SECTIONS: Section[] = [
         </ul>
       </>
     ),
+  },
+  {
+    id: "a-mini4k", groupe: "A. Prise de vue par drone", titre: "Votre drone : DJI Mini 4K",
+    contenu: () => <FicheMini4K />,
   },
   {
     id: "a-hauteur", groupe: "A. Prise de vue par drone", titre: "Quelle hauteur de vol ?",
@@ -564,7 +569,7 @@ export const SECTIONS: Section[] = [
 
 /** Sections d'aide associées à chaque étape d'un chantier (aide contextuelle). */
 export const AIDE_ETAPES: Record<string, string[]> = {
-  preparation: ["b-assistant", "a-preparer", "a-hauteur", "a-angles", "a-versants", "a-controle"],
+  preparation: ["b-assistant", "a-mini4k", "a-preparer", "a-hauteur", "a-angles", "a-versants", "a-controle"],
   photos: ["c-import", "c-analyse", "a-qualite", "a-versants", "a-gps"],
   traitement: ["c-traitement", "d-modes"],
   metre: ["d-pan", "d-echelle", "d-lignes", "d-obstacles", "d-surfaces", "d-erreurs"],

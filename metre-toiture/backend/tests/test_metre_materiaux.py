@@ -157,3 +157,13 @@ def test_plan_de_vol():
     assert any("roulant" in c for c in p["conseils"])
     inconnu = generer_plan({"longueur": 10, "largeur": 8})
     assert inconnu["passages_verticaux"] is None and inconnu["alertes"]
+
+
+def test_plan_dji_mini_4k():
+    p = generer_plan({"type_toiture": "quatre_pans", "longueur": 14, "largeur": 10, "hauteur_faitage": 9,
+                      "complexite": "moyenne", "drone": "dji_mini_4k", "precision": "devis"})
+    assert p["camera"]["nom"] == "DJI Mini 4K"
+    assert p["gsd_toit_cm"] == pytest.approx(1.2, rel=0.01)
+    assert any("photo à intervalle" in c for c in p["conseils"])
+    assert any("obstacles" in a for a in p["alertes"])
+    assert p["batteries_estimees"] >= 2

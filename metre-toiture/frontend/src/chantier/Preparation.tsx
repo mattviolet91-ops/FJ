@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { api, fr } from "../api";
 import { Icone, useToast } from "../components/ui";
 import { Checklist } from "../guide/contenu";
+import { FicheMini4K } from "../guide/drones";
 import type { Chantier, PlanVol } from "../types";
 
 interface Ref {
@@ -12,7 +13,7 @@ interface Ref {
 }
 
 const DEFAUT = { type_toiture: "deux_pans", longueur: 12, largeur: 9, hauteur_faitage: 8, complexite: "simple",
-  drone: "", focale_35mm: "", largeur_px: "", hauteur_px: "", precision: "devis", vent: "faible", lumiere: "nuageux",
+  drone: "dji_mini_4k", focale_35mm: "", largeur_px: "", hauteur_px: "", precision: "devis", vent: "faible", lumiere: "nuageux",
   obstacles: [] as string[], mitoyen: false };
 
 export function EtapePreparation({ chantier, maj }: { chantier: Chantier; maj: () => void }) {
@@ -74,6 +75,12 @@ export function EtapePreparation({ chantier, maj }: { chantier: Chantier; maj: (
         <div><button className="btn primaire grand" onClick={generer}>Générer le plan de prise de vue</button></div>
       </div>
       {plan && <AffichagePlan plan={plan} chantierId={chantier.id} />}
+      {p.drone === "dji_mini_4k" && (
+        <details className="carte" open={!plan}>
+          <summary style={{ cursor: "pointer", fontWeight: 700 }}>Réglages et conseils DJI Mini 4K</summary>
+          <div style={{ marginTop: 10 }}><FicheMini4K compacte /></div>
+        </details>
+      )}
     </div>
   );
 }

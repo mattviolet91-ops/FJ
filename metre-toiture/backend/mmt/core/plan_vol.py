@@ -16,6 +16,8 @@ from .photos import DIAG_35MM
 DRONES = {
     "dji_mini_2": {"nom": "DJI Mini 2 / Mini 2 SE", "focale_35mm": 24, "largeur_px": 4000, "hauteur_px": 3000,
                     "obturateur": "roulant", "autonomie_min": 31},
+    "dji_mini_4k": {"nom": "DJI Mini 4K", "focale_35mm": 24, "largeur_px": 4000, "hauteur_px": 3000,
+                    "obturateur": "roulant", "autonomie_min": 31, "sans_waypoints": True, "sans_evitement": True},
     "dji_mini_3": {"nom": "DJI Mini 3 / Mini 3 Pro (12 MP)", "focale_35mm": 24, "largeur_px": 4032,
                     "hauteur_px": 3024, "obturateur": "roulant", "autonomie_min": 34},
     "dji_mini_4_pro": {"nom": "DJI Mini 4 Pro (12 MP)", "focale_35mm": 24, "largeur_px": 4032,
@@ -174,6 +176,14 @@ def generer_plan(params: dict) -> dict:
     ]})
 
     conseils = []
+    if cam.get("sans_waypoints"):
+        vit = f"≈ {nfr(min(3.0, pas_photo / 3), 1)} m/s" if pas_photo else "lente (≤ 3 m/s)"
+        conseils.append("Pas de vol automatique par points de passage sur ce drone : passages verticaux en vol manuel, "
+                        f"nacelle à −90°, mode « photo à intervalle » réglé sur 3 s et vitesse constante {vit} ; "
+                        "orbite en manuel, un arrêt complet et une photo tous les ~10°.")
+    if cam.get("sans_evitement"):
+        alertes.append("Ce drone ne détecte pas les obstacles (seulement vers le bas) : gardez une distance franche "
+                       "avec cheminées, antennes, arbres et câbles, surtout pendant l'orbite basse.")
     if cam.get("obturateur") == "roulant":
         conseils.append("Obturateur électronique (roulant) : marquez un arrêt ou ralentissez fortement à chaque "
                         "photo pour éviter les déformations, surtout en vol automatique.")
@@ -202,7 +212,8 @@ def generer_plan(params: dict) -> dict:
     batteries = None
     if cam.get("autonomie_min"):
         # rythme indicatif : ~ 4 s par photo + transitions, autonomie utile 60 %
-        duree_min = total * 4 / 60 + 4 * len(orbites) + 3
+        s_photo = 8 if cam.get("sans_waypoints") else 4   # vol manuel : arrêt à chaque photo
+        duree_min = total * s_photo / 60 + 4 * len(orbites) + 3
         batteries = max(1, math.ceil(duree_min / (cam["autonomie_min"] * 0.6)))
     return {
         "camera": cam,
