@@ -28,8 +28,8 @@ résume le déroulement.
 * **Obstacle** : dessinez une fenêtre de toit ou une cheminée ; choisissez sa nature et s'il faut le déduire.
 * **Cote réf.** : touchez les extrémités d'une longueur mesurée sur place et saisissez sa valeur réelle.
 * **Mesurer** : distance réelle entre deux points (pente comprise), sans rien modifier.
-* **Détecter** : relance la détection automatique autour du point touché (utile si le mauvais bâtiment a été
-  choisi ou après une correction de la zone).
+* **Détecter** : relance la détection automatique dans un cadre que vous tracez autour du bâtiment (deux coins
+  opposés). Utile si le mauvais bâtiment a été choisi ou si des arbres voisins perturbent le résultat.
 * **Vue 3D** : nuage de points et pans en 3D, pour vérifier visuellement.
 * **Compléments / saisie** : lignes non dessinables (solins, gouttières hors plan), obstacles par
   dimensions, pans saisis par dimensions.

@@ -17,7 +17,7 @@ const CONSIGNES: Record<Outil, string> = {
   point: "Touchez une arête du pan sélectionné pour y ajouter un sommet.",
   reference: "Touchez les deux extrémités d'une longueur mesurée sur place.",
   mesure: "Touchez deux points pour mesurer leur distance réelle (pente comprise).",
-  detection: "Touchez le toit à mesurer : les pans seront détectés automatiquement autour de ce point.",
+  detection: "Encadrez le bâtiment à mesurer : touchez deux coins opposés (au plus près du toit, sans les arbres voisins).",
   egout: "Touchez le bord bas (égout) du pan : la pente descendra vers ce bord.",
 };
 
@@ -32,6 +32,7 @@ export function EtapeMetre({ chantier, maj }: { chantier: Chantier; maj: () => v
   const [enCours, setEnCours] = useState<Pt[]>([]);
   const [mesure, setMesure] = useState<{ p1: Pt; p2?: Pt; longueur?: number } | null>(null);
   const [refAttente, setRefAttente] = useState<{ p1: Pt; p2: Pt } | null>(null);
+  const [cadre, setCadre] = useState<Pt | null>(null);
   const [vue, setVue] = useState<"plan" | "3d" | "saisie">(chantier.modele ? "plan" : "saisie");
   const [fond, setFond] = useState<"ortho" | "mns" | "aucun">(chantier.modele?.type === "odm" && !chantier.modele.ortho ? "mns" : "ortho");
   const [aimant, setAimant] = useState(true);
@@ -254,11 +255,19 @@ export function EtapeMetre({ chantier, maj }: { chantier: Chantier; maj: () => v
       if (!mesure || mesure.p2) setMesure({ p1: pt });
       else { setRefAttente({ p1: mesure.p1, p2: pt }); setMesure(null); setOutil("selection"); }
     } else if (o === "detection") {
+      if (!cadre) { setCadre(pt); return; }
+      const c0 = cadre;
+      setCadre(null);
       setOutil("selection");
+      const [x0, x1] = [Math.min(c0[0], pt[0]), Math.max(c0[0], pt[0])];
+      const [y0, y1] = [Math.min(c0[1], pt[1]), Math.max(c0[1], pt[1])];
+      if (x1 - x0 < 2 || y1 - y0 < 2) return toast("Cadre trop petit : encadrez tout le bâtiment.", "erreur");
+      if (x1 - x0 > 120 || y1 - y0 > 120) return toast("Cadre trop grand (120 m maximum) : encadrez un seul bâtiment.", "erreur");
       if (doc.pans.length && !confirm("La détection remplace les pans actuels (une nouvelle version est créée, l'ancienne reste dans l'historique). Continuer ?")) return;
       if (sale && !confirm("Des modifications ne sont pas enregistrées et seront perdues. Continuer ?")) return;
       try {
-        const t = await api.post<Traitement>(`/api/chantiers/${chantier.id}/detection`, { graine: pt });
+        const t = await api.post<Traitement>(`/api/chantiers/${chantier.id}/detection`, {
+          graine: [(x0 + x1) / 2, (y0 + y1) / 2], zone: [[x0, y0], [x1, y0], [x1, y1], [x0, y1]] });
         setDetection(t);
         toast("Détection des pans en cours…");
       } catch (e) { toast((e as Error).message, "erreur"); }
@@ -336,10 +345,10 @@ export function EtapeMetre({ chantier, maj }: { chantier: Chantier; maj: () => v
             <div style={{ position: "relative" }}>
               <EditeurPlan chantier={chantier} doc={doc} calcul={calcul} outil={outil} selection={selection} setSelection={setSelection}
                 apercu={apercu} modifier={(d, desc) => finGlisse(d, desc)} surTrace={() => {}} surClic={surClic} fond={fond} aimant={aimant}
-                enCours={enCours} mesure={mesure} />
+                enCours={enCours} mesure={mesure} cadre={outil === "detection" ? cadre : null} />
               <div className="outils">
                 {outils.map(([o, ic, l]) => (
-                  <button key={o} title={l} className={`btn ${outil === o ? "actif" : ""}`} onClick={() => { setOutil(o); setEnCours([]); setMesure(null); }}>
+                  <button key={o} title={l} className={`btn ${outil === o ? "actif" : ""}`} onClick={() => { setOutil(o); setEnCours([]); setMesure(null); setCadre(null); }}>
                     <Icone nom={ic} taille={16} /> <span className="masque-mobile">{l}</span>
                   </button>
                 ))}

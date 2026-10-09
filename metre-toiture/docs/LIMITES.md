@@ -26,8 +26,10 @@ avant de s'appuyer sur ses résultats.
   ne reconnaît pas un solin contre un mur (à requalifier à la main). Aucun modèle d'apprentissage
   automatique n'est utilisé : cela évite des résultats non explicables, mais limite la reconnaissance
   sémantique (nature exacte d'une émergence, matériau de couverture).
-* Le choix du bâtiment se fait par la position GPS du chantier, le point touché ou le centre du modèle :
-  en zone dense, touchez le bon toit avec l'outil « Détecter ».
+* Le choix du bâtiment se fait par la position GPS du chantier, le centre des prises de vue ou le cadre tracé
+  avec l'outil « Détecter » : en zone dense ou arborée, encadrez le bâtiment.
+* **Végétation** : écartée par un indice de vert calculé sur l'orthophoto ; les feuillages d'automne
+  (orangés) ou sans couleur marquée sont mal reconnus et peuvent produire de faux pans à supprimer.
 
 ## Fonctionnel
 

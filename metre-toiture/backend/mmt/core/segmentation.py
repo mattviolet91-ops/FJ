@@ -51,6 +51,10 @@ class Parametres:
     hauteur_emergence: float = 0.25       # m au-dessus du pan
     surface_min_emergence: float = 0.08   # m²
     max_pans: int = 40
+    rms_max_pan: float = 0.06            # m, écart au plan maximal d'un pan accepté
+    pente_max: float = 70.0              # degrés (au-delà : mur, façade, végétation)
+    compacite_min: float = 0.45          # surface / surface de l'enveloppe convexe
+    surface_fragment: float = 4.0        # m², fragments rattachés au pan voisin compatible
     lissage_m: float = 0.10               # écart-type du lissage (m)
     graine: int = 1
 
@@ -170,7 +174,8 @@ def _ajuster(xs, ys, zs) -> tuple[geo.Plan, float]:
 # ---------------------------------------------------------------------------
 def segmenter(g: Grille, graine_xy: tuple[float, float] | None = None,
               zone: list[tuple[float, float]] | None = None,
-              p: Parametres | None = None) -> Resultat:
+              p: Parametres | None = None, exclusion: np.ndarray | None = None) -> Resultat:
+    """exclusion : cellules à écarter (ex. végétation détectée sur l'orthophoto)."""
     p = p or Parametres()
     rng = np.random.default_rng(p.graine)
     res = Resultat()
@@ -198,6 +203,10 @@ def segmenter(g: Grille, graine_xy: tuple[float, float] | None = None,
     z_sol = float(np.nanpercentile(zm, 5))
     res.z_sol = z_sol
     sureleve = (zm > z_sol + p.hauteur_min_batiment) & zone_mask
+    if exclusion is not None:
+        # la végétation n'appartient pas au bâtiment (ouverture pour supprimer les pixels isolés)
+        veg = ndimage.binary_opening(exclusion, iterations=2)
+        sureleve &= ~veg
     lab, n = ndimage.label(sureleve)
     if n == 0:
         res.avertissements.append("Aucun volume surélevé détecté : vérifiez la zone ou la hauteur minimale.")
@@ -270,7 +279,13 @@ def segmenter(g: Grille, graine_xy: tuple[float, float] | None = None,
             if region.sum() < 10:
                 break
             plan, _ = _ajuster(X[region], Y[region], zm[region])
-        if region is None or region.sum() * cell_a < p.surface_min_pan:
+        acceptable = region is not None and region.sum() * cell_a >= p.surface_min_pan
+        if acceptable:
+            resid = (zm[region] - plan.z(X[region], Y[region])) / plan.facteur_pente
+            rms_r = float(np.sqrt(np.mean(resid ** 2)))
+            acceptable = rms_r <= p.rms_max_pan and plan.pente_deg <= p.pente_max and \
+                _compacite(region) >= p.compacite_min
+        if not acceptable:
             echecs += 1
             # neutraliser les meilleures graines pour ne pas boucler
             if region is not None:
@@ -284,28 +299,9 @@ def segmenter(g: Grille, graine_xy: tuple[float, float] | None = None,
         res.avertissements.append("Aucun pan plan n'a pu être identifié sur ce volume.")
         return res
 
-    # --- 4. comblement des bords
-    for _ in range(200):
-        change = False
-        libre = batiment & (labels < 0)
-        if not libre.any():
-            break
-        best_r = np.full((H, W), np.inf)
-        best_l = -np.ones((H, W), dtype=int)
-        for k, pl in enumerate(plans):
-            fr = ndimage.binary_dilation(labels == k) & libre
-            if not fr.any():
-                continue
-            r = np.abs(zm - pl.z(X, Y))
-            ok = fr & (r < p.tolerance_comblement) & (r < best_r)
-            best_r[ok] = r[ok]
-            best_l[ok] = k
-        sel = best_l >= 0
-        if sel.any():
-            labels[sel] = best_l[sel]
-            change = True
-        if not change:
-            break
+    # --- 4. comblement des bords : croissance simultanée de toutes les régions, cellule par cellule,
+    # en n'acceptant que les cellules proches du plan de la région voisine (vectorisé)
+    _combler(labels, plans, batiment, zm, X, Y, p.tolerance_comblement)
 
     # --- fusion des plans coplanaires voisins
     def _coplanaires(p1: geo.Plan, p2: geo.Plan) -> bool:
@@ -339,6 +335,32 @@ def segmenter(g: Grille, graine_xy: tuple[float, float] | None = None,
                     break
             if fusion:
                 break
+
+    # rattachement des petits fragments (MNS bruité ou « en escalier ») au voisin qui les explique
+    for _ in range(3):
+        tailles = {k: int((labels == k).sum()) for k in range(len(plans))}
+        petits = sorted((k for k, n in tailles.items() if 0 < n * cell_a < p.surface_fragment), key=tailles.get)
+        modif = False
+        for k in petits:
+            m = labels == k
+            if not m.any():
+                continue
+            bord = ndimage.binary_dilation(m, croix) & ~m
+            vois, nb = np.unique(labels[bord], return_counts=True)
+            ordre = [v for v, c in sorted(zip(vois.tolist(), nb.tolist()), key=lambda t: -t[1]) if v >= 0 and v != k and c >= 2]
+            for v in ordre:
+                pv = plans[v]
+                if np.median(np.abs(zm[m] - pv.z(X[m], Y[m]))) > p.tolerance_comblement / 2:
+                    continue
+                mm = m | (labels == v)
+                pl, rms = _ajuster(X[mm], Y[mm], zm[mm])
+                if rms <= p.rms_max_pan:
+                    labels[m] = v
+                    plans[v] = pl
+                    modif = True
+                    break
+        if not modif:
+            break
 
     # séparation des régions reliées par un simple point ou un isthme étroit
     it = max(1, int(round(0.15 / g.res)))
@@ -473,6 +495,57 @@ def segmenter(g: Grille, graine_xy: tuple[float, float] | None = None,
             f"{round(part * 100)} % du volume du bâtiment n'a été rattaché à aucun pan "
             "(végétation, superstructures ou zones mal reconstruites). Contrôlez les contours.")
     return res
+
+
+def _compacite(m: np.ndarray) -> float:
+    """Rapport entre la surface d'une région et celle de son enveloppe convexe (1 = convexe)."""
+    from scipy.spatial import ConvexHull
+    ii, jj = np.nonzero(m)
+    if len(ii) < 10:
+        return 0.0
+    pts = np.column_stack([ii, jj]).astype(float)
+    try:
+        h = ConvexHull(pts)
+    except Exception:
+        return 0.0
+    return float(min(1.0, len(ii) / max(h.volume, 1.0)))
+
+
+def _combler(labels: np.ndarray, plans: list[geo.Plan], masque: np.ndarray, z: np.ndarray, X: np.ndarray,
+             Y: np.ndarray, tol: float, max_iter: int = 400) -> None:
+    H, W = labels.shape
+    A = np.array([pl.a for pl in plans])
+    B = np.array([pl.b for pl in plans])
+    C = np.array([pl.c for pl in plans])
+    voisins = [(-1, 0), (1, 0), (0, -1), (0, 1), (-1, -1), (-1, 1), (1, -1), (1, 1)]
+    for _ in range(max_iter):
+        libre = masque & (labels < 0)
+        # seules les cellules libres au contact d'une région sont candidates
+        front = libre & ndimage.binary_dilation(labels >= 0, structure=np.ones((3, 3)))
+        ii, jj = np.nonzero(front)
+        if not len(ii):
+            break
+        meilleur_r = np.full(len(ii), np.inf)
+        meilleur_l = np.full(len(ii), -1)
+        zc, xc, yc = z[ii, jj], X[ii, jj], Y[ii, jj]
+        for di, dj in voisins:
+            ni, nj = ii + di, jj + dj
+            ok = (ni >= 0) & (ni < H) & (nj >= 0) & (nj < W)
+            L = np.full(len(ii), -1)
+            L[ok] = labels[ni[ok], nj[ok]]
+            v = L >= 0
+            if not v.any():
+                continue
+            r = np.full(len(ii), np.inf)
+            Lv = L[v]
+            r[v] = np.abs(zc[v] - (A[Lv] * xc[v] + B[Lv] * yc[v] + C[Lv]))
+            maj = (r < tol) & (r < meilleur_r)
+            meilleur_r[maj] = r[maj]
+            meilleur_l[maj] = L[maj]
+        sel = meilleur_l >= 0
+        if not sel.any():
+            break
+        labels[ii[sel], jj[sel]] = meilleur_l[sel]
 
 
 def _rectangle_oriente(pts: np.ndarray, res: float) -> list[tuple[float, float]]:

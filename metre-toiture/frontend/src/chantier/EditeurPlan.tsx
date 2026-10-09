@@ -30,6 +30,7 @@ interface Props {
   aimant: boolean;
   enCours: Pt[];
   mesure: { p1: Pt; p2?: Pt; longueur?: number } | null;
+  cadre?: Pt | null;
 }
 
 const RAYON_SOMMET = 7;
@@ -353,6 +354,11 @@ export function EditeurPlan(p: Props) {
               {p.mesure.longueur !== undefined && <text x={(a[0] + b[0]) / 2} y={(a[1] + b[1]) / 2 - 8} textAnchor="middle" fontSize={13} fontWeight={700} fill="#000" stroke="#FFD43B" strokeWidth={4} paintOrder="stroke">{fr(p.mesure.longueur, 2)} m</text>}
             </g>
           );
+        })()}
+        {p.cadre && (() => {
+          const a = versEcran(p.cadre), b = versEcran(curseur || p.cadre);
+          return <rect x={Math.min(a[0], b[0])} y={Math.min(a[1], b[1])} width={Math.abs(b[0] - a[0])} height={Math.abs(b[1] - a[1])}
+            fill="rgba(255,212,59,.12)" stroke="#FFD43B" strokeWidth={2} strokeDasharray="8 5" style={{ pointerEvents: "none" }} />;
         })()}
         {curseur && p.outil !== "selection" && (() => { const e = versEcran(curseur); return <circle cx={e[0]} cy={e[1]} r={4} fill="#FFD43B" stroke="#000" style={{ pointerEvents: "none" }} />; })()}
         {/* échelle graphique et nord */}

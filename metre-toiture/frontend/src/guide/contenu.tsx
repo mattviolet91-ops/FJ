@@ -391,7 +391,8 @@ export const SECTIONS: Section[] = [
         <p>La durée affichée est une estimation, recalée automatiquement sur les calculs déjà réalisés sur votre
           serveur. Vous pouvez fermer la page : le traitement continue et reprend même après un redémarrage.</p>
         <p>À la fin, les pans sont <b>détectés automatiquement</b> sur le modèle de surface. Si le mauvais bâtiment a
-          été choisi, utilisez l'outil « Détecter » et touchez le toit à mesurer.</p>
+          été choisi ou si des arbres voisins perturbent le résultat, utilisez l'outil « Détecter » et encadrez le
+          bâtiment (deux coins opposés, au plus près du toit).</p>
       </>
     ),
   },

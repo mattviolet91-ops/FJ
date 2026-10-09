@@ -122,10 +122,15 @@ def executer_detection(db: Session, chantier: Chantier, graine=None, zone=None, 
             graine = ((min(xs) + max(xs)) / 2, (min(ys) + max(ys)) / 2)
     else:
         if graine is None:
+            pos = [(p.meta or {}) for p in db.query(Photo).filter(Photo.chantier_id == chantier.id, Photo.exclue == False)  # noqa
+                   .all() if (p.meta or {}).get("lat") is not None]
             if chantier.lat is not None and chantier.lon is not None and info.get("epsg"):
                 graine = mod.depuis_wgs84(info, chantier.lon, chantier.lat)
-            else:
-                b = info["bornes"]
+            elif pos and (info.get("epsg") or info.get("crs_wkt")):
+                # à défaut de position du chantier : centre des prises de vue (le vol est centré sur le toit)
+                graine = mod.depuis_wgs84(info, sum(m["lon"] for m in pos) / len(pos), sum(m["lat"] for m in pos) / len(pos))
+            b = info["bornes"]
+            if graine is None or not (b[0] <= graine[0] <= b[2] and b[1] <= graine[1] <= b[3]):
                 graine = ((b[0] + b[2]) / 2, (b[1] + b[3]) / 2)
         r = float((params or {}).get("rayon", 30))
         bbox = (graine[0] - r, graine[1] - r, graine[0] + r, graine[1] + r)
@@ -136,7 +141,8 @@ def executer_detection(db: Session, chantier: Chantier, graine=None, zone=None, 
     for k, v in (params or {}).items():
         if hasattr(p, k) and v is not None:
             setattr(p, k, type(getattr(p, k))(v))
-    res = segmenter(grille, graine_xy=tuple(graine), zone=zone, p=p)
+    vegetation = mod.vegetation_sur_grille(dossier, grille)
+    res = segmenter(grille, graine_xy=tuple(graine), zone=zone, p=p, exclusion=vegetation)
     # couverture réelle par le nuage de points (le MNS d'ODM est interpolé et masque les lacunes)
     for i, pan in enumerate(res.pans):
         pl = geo.Plan.from_dict(pan["plan"])

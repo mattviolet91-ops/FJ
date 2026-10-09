@@ -321,3 +321,27 @@ def couverture_nuage(dossier: Path, contour: list[tuple[float, float]], cellule:
         i = np.clip(((pts[:, 1] - y0) / cellule).astype(int), 0, ny - 1)
         occ[i, j] = True
     return float(occ[dedans].mean())
+
+
+def vegetation_sur_grille(dossier: Path, g: Grille, seuil_exg: float = 0.06) -> np.ndarray | None:
+    """Masque de végétation (indice de vert ExG = 2g − r − b en coordonnées chromatiques) calculé sur
+    l'orthophoto rééchantillonnée sur la grille du MNS. None sans orthophoto."""
+    import rasterio
+    from rasterio.enums import Resampling
+    from rasterio.windows import from_bounds
+
+    info = lire_info(dossier)
+    if "ortho" not in info.get("fichiers", {}):
+        return None
+    e0, n0 = info["origine"]
+    H, W = g.z.shape
+    with rasterio.open(dossier / info["fichiers"]["ortho"]) as ds:
+        w = from_bounds(g.x0 + e0, g.y0 - H * g.res + n0, g.x0 + W * g.res + e0, g.y0 + n0, transform=ds.transform)
+        a = ds.read([1, 2, 3], window=w, out_shape=(3, H, W), resampling=Resampling.average, boundless=True,
+                    fill_value=0).astype(float)
+    s = a.sum(axis=0)
+    with np.errstate(invalid="ignore", divide="ignore"):
+        r, gg, b = a[0] / s, a[1] / s, a[2] / s
+        exg = 2 * gg - r - b
+    lum = s / 3
+    return (exg > seuil_exg) & (lum > 30) & np.isfinite(exg)
