@@ -550,6 +550,15 @@ function Panneau({ doc, calcul, selection, setSelection, majPan, modifier, suppr
               <td>{p.valide ? <Badge statut="ok">✓</Badge> : <Badge statut={p.confiance.niveau}>{p.confiance.niveau === "saisie" ? "saisie" : "à voir"}</Badge>}</td>
             </tr>))}</tbody>
         </table>
+        {calcul.pans.some((p) => !p.valide && p.surface < 3) && (
+          <button className="btn petit" style={{ marginTop: 8, marginRight: 6 }} onClick={() => {
+            const petits = calcul.pans.filter((p) => !p.valide && p.surface < 3).map((p) => p.id);
+            if (confirm(`Supprimer les ${petits.length} pan(s) non validé(s) de moins de 3 m² (fragments) ?`)) {
+              modifier({ ...doc, pans: doc.pans.filter((p) => !petits.includes(p.id)) }, `${petits.length} petits pans supprimés`);
+              setSelection(null);
+            }
+          }}>Supprimer les fragments (&lt; 3 m²)</button>
+        )}
         {calcul.pans.length > 0 && calcul.pans.some((p) => !p.valide) && (
           <button className="btn petit" style={{ marginTop: 8 }} onClick={() => {
             if (confirm("Marquer tous les pans comme contrôlés ? Ne le faites qu'après les avoir réellement vérifiés.")) {

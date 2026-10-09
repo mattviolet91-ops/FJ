@@ -431,6 +431,9 @@ export const SECTIONS: Section[] = [
           <li><b>Dessiner un pan</b> : outil « Pan », touchez chaque angle puis « Terminer ».</li>
           <li><b>Pente</b> : issue du modèle 3D (plan ajusté sur les points) ; après une modification importante du
             contour, utilisez « Réajuster sur le modèle 3D ». Vous pouvez aussi saisir une pente mesurée sur place.</li>
+          <li><b>Nettoyer</b> : sur des photos difficiles (arbres, vues verticales seules), la détection peut créer de
+            petits fragments ; le bouton « Supprimer les fragments » retire d'un coup les pans non validés de moins de
+            3 m². Redessinez ensuite les pans manquants avec l'outil « Pan ».</li>
           <li><b>Valider</b> : cochez « Pan contrôlé » une fois le contour et la pente vérifiés.</li>
         </ul>
         <p>Raccourcis clavier : Ctrl+Z / Ctrl+Y (annuler / rétablir), Suppr (supprimer la sélection), Échap.</p>
