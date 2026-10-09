@@ -69,7 +69,22 @@ avant tout usage en devis.
 
 ## 3. Reconstruction pilotée par l'application
 
-Voir le résultat consigné ci-dessous (préréglage « Aperçu rapide », 87 photos).
+Chantier créé dans l'application, 87 photos importées par l'API (26 s), reconstruction lancée en préréglage
+« Aperçu rapide » sur le NodeODM local :
+
+* **Premier essai : bug réel détecté et corrigé.** Le calcul a abouti mais sans MNS : NodeODM n'analyse
+  `/task/new/init` qu'en `multipart/form-data` et ignorait silencieusement les options envoyées en formulaire
+  classique. Correctifs : envoi en multipart, **contrôle défensif** (après validation de la tâche, l'application
+  vérifie que le MNS est bien demandé, sinon elle arrête avec un message clair), test automatisé du format.
+  Le faux serveur des tests ne pouvait pas révéler ce défaut : seul l'essai réel l'a fait.
+* Pendant cet essai, le serveur applicatif a été **redémarré deux fois** en plein calcul : le suivi a repris
+  automatiquement à chaque fois.
+* **Second essai (corrigé) : réussi de bout en bout** — envoi, file d'attente, calcul (12,6 min), téléchargement,
+  préparation du repère, détection automatique : **13 min au total**. La durée estimée a priori (≈ 21 min)
+  sera recalée automatiquement par l'historique.
+* Sans position GPS du chantier, la détection automatique vise le centre du vol, ici un parking arboré :
+  les « pans » trouvés n'ont pas de sens. C'est le cas d'usage de l'outil **Détecter** (encadrer le bâtiment)
+  et la raison pour laquelle la création de chantier propose d'enregistrer la position sur place.
 
 ## 4. Interface
 
