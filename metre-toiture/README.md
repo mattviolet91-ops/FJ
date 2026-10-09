@@ -5,7 +5,9 @@ reconstruction 3D (OpenDroneMap), détection automatique des pans, surfaces, pen
 correction manuelle, calcul des matériaux, rapport PDF et exports — avec un **guide de prise de vue
 intégré** accessible à chaque étape.
 
-![Capture](docs/captures/metre.png)
+![Éditeur de métré — toit de démonstration synthétique](docs/captures/metre.jpg)
+
+*Captures : [éditeur](docs/captures/metre.jpg) (toit synthétique de démonstration), [guide](docs/captures/guide.jpg), [mobile](docs/captures/mobile.jpg).*
 
 ## En bref
 
