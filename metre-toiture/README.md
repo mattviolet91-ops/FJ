@@ -39,7 +39,8 @@ docker compose up -d --build      # application + moteur 3D
 # puis http://localhost:8000 (création du compte administrateur à la première visite)
 ```
 
-Détails : [docs/INSTALLATION.md](docs/INSTALLATION.md).
+Sur un PC Windows : double-clic sur **`INSTALLER.bat`**, le lien internet s'affiche à la fin
+([pas à pas](docs/INSTALLATION_PC.md)). Autres cas : [docs/INSTALLATION.md](docs/INSTALLATION.md).
 
 ## Documentation
 

@@ -5,7 +5,12 @@
 > son hébergement actuel ; l'application s'installe à part (sous-domaine conseillé, ex.
 > `metre.mattscouverture.fr`).
 
-## Option A — tout sur un serveur avec Docker (recommandée)
+## Le plus simple : le PC de l'entreprise
+
+Double-clic sur `INSTALLER.bat` (Windows) ou `./installer.sh` (Linux/Mac) : l'application démarre et une
+adresse internet HTTPS s'affiche. Pas à pas : [INSTALLATION_PC.md](INSTALLATION_PC.md).
+
+## Option A — tout sur un serveur avec Docker
 
 Prérequis : une machine Linux (ou Windows/Mac avec Docker Desktop) avec **au moins 4 cœurs et 16 Go de
 mémoire** si elle fait aussi les calculs 3D (8 Go suffisent pour de petits jeux de photos en préréglage

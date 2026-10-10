@@ -1,5 +1,7 @@
-# Installation complète sur un serveur : application + moteur de reconstruction 3D.
-# Démarrage :  docker compose up -d   puis ouvrir http://<serveur>:8000
+# Installation complète : application + moteur de reconstruction 3D.
+# Démarrage local   :  docker compose up -d                      puis http://localhost:8000
+# Accès par internet :  docker compose --profile internet up -d   (adresse https affichée par le service « tunnel »)
+# Le plus simple : lancer installer-windows.ps1 ou installer.sh, qui fait tout et affiche le lien.
 services:
   app:
     build: .
@@ -9,6 +11,8 @@ services:
     environment:
       MMT_NODEODM_URL: http://nodeodm:3000
       MMT_COOKIE_SECURE: "${MMT_COOKIE_SECURE:-false}"   # mettre true derrière HTTPS
+      MMT_ADMIN_EMAIL: "${MMT_ADMIN_EMAIL:-}"            # compte créé au premier démarrage
+      MMT_ADMIN_PASSWORD: "${MMT_ADMIN_PASSWORD:-}"
     volumes:
       - mmt-donnees:/data
     depends_on:
@@ -21,6 +25,19 @@ services:
     command: ["--max_images", "500", "--cleanup_tasks_after", "2880"]
     volumes:
       - nodeodm-donnees:/var/www/data
+
+  # Accès sécurisé (HTTPS) depuis internet sans ouvrir de port sur la box : tunnel Cloudflare.
+  # Sans compte, l'adresse (…trycloudflare.com) change à chaque redémarrage ; voir docs/INSTALLATION_PC.md
+  # pour une adresse fixe (compte Cloudflare gratuit + jeton dans CLOUDFLARE_TUNNEL_TOKEN).
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    profiles: ["internet"]
+    restart: unless-stopped
+    command: ${TUNNEL_COMMANDE:-tunnel --no-autoupdate --url http://app:8000}
+    environment:
+      TUNNEL_TOKEN: "${CLOUDFLARE_TUNNEL_TOKEN:-}"
+    depends_on:
+      - app
 
 volumes:
   mmt-donnees:
