@@ -5,8 +5,15 @@ Set-Location -Path $PSScriptRoot
 
 function Pause-Fin { Write-Host ""; Read-Host "Appuyez sur Entrée pour fermer" | Out-Null }
 
-try { docker info *> $null; if ($LASTEXITCODE -ne 0) { throw "docker" } }
-catch {
+# Docker Desktop peut mettre quelques minutes à démarrer : on l'attend jusqu'à 5 minutes
+$dockerOk = $false
+for ($i = 0; $i -lt 60; $i++) {
+  try { docker info *> $null; if ($LASTEXITCODE -eq 0) { $dockerOk = $true; break } } catch {}
+  if ($i -eq 0) { Write-Host -NoNewline "Attente du démarrage de Docker Desktop" }
+  Write-Host -NoNewline "."; Start-Sleep -Seconds 5
+}
+Write-Host ""
+if (-not $dockerOk) {
   Write-Host "Docker Desktop n'est pas démarré ou pas installé." -ForegroundColor Red
   Write-Host "Installez-le depuis https://www.docker.com/products/docker-desktop/ , démarrez-le, puis relancez INSTALLER.bat."
   Pause-Fin; exit 1
