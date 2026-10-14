@@ -6,6 +6,7 @@ Thème sombre noir et or, reprenant la carte de visite de l'entreprise.
 | Fichier / dossier | Contenu |
 |---|---|
 | `index.html` + `assets/` | Le site (publié sur GitHub Pages) |
+| `freellmapi/` | Installation de FreeLLMAPI avec bascule auto vers des modèles gratuits ([voir](freellmapi/README.md)) |
 
 ## Voir le site en ligne
 https://mattviolet91-ops.github.io/FJ/

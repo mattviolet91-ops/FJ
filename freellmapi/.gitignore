@@ -1,0 +1,3 @@
+# Secrets et fichiers générés : ne jamais committer
+.env
+freellmapi.config.json
